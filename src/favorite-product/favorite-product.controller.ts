@@ -1,16 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FavoriteProductService } from './favorite-product.service';
 import { FavoriteProduct } from './entities/favorite-product.entity';
+import { CreateFavoriteProductDto } from './dto/create-favorite-product.dto';
 
-@Controller('favorite-products')
+@Controller('favorite')
 export class FavoriteProductController {
   constructor(
     private readonly favoriteProductService: FavoriteProductService,
@@ -18,7 +11,7 @@ export class FavoriteProductController {
 
   @Post()
   create(
-    @Body() createFavoriteProductDto: FavoriteProduct,
+    @Body() createFavoriteProductDto: CreateFavoriteProductDto,
   ): Promise<FavoriteProduct> {
     return this.favoriteProductService.create(createFavoriteProductDto);
   }
@@ -28,21 +21,15 @@ export class FavoriteProductController {
     return this.favoriteProductService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: number): Promise<FavoriteProduct> {
-    return this.favoriteProductService.findOne(id);
+  @Get(':productId')
+  findOneByProductId(
+    @Param('productId') productId: string,
+  ): Promise<FavoriteProduct | null> {
+    return this.favoriteProductService.findOneByProductId(productId);
   }
 
-  @Put(':id')
-  update(
-    @Param('id') id: number,
-    @Body() updateFavoriteProductDto: Partial<FavoriteProduct>,
-  ): Promise<FavoriteProduct> {
-    return this.favoriteProductService.update(id, updateFavoriteProductDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.favoriteProductService.remove(id);
+  @Delete(':productId')
+  removeByProductId(@Param('productId') productId: string): Promise<void> {
+    return this.favoriteProductService.removeByProductId(productId);
   }
 }

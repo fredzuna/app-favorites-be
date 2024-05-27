@@ -11,7 +11,9 @@ describe('FavoriteProductController', () => {
       providers: [FavoriteProductService],
     }).compile();
 
-    controller = module.get<FavoriteProductController>(FavoriteProductController);
+    controller = module.get<FavoriteProductController>(
+      FavoriteProductController,
+    );
   });
 
   it('should be defined', () => {
