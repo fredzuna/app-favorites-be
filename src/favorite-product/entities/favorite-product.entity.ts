@@ -19,4 +19,7 @@ export class FavoriteProduct {
 
   @Column()
   imageUrl: string;
+
+  @Column({ type: 'text' })
+  jsonData: string;
 }
