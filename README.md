@@ -1,3 +1,11 @@
+# run the project locally
+to run the project execute the next comands
+- npm install 
+- npm run start
+- open the url http://localhost:5000 in the browser
+
+To run the unit test execute "npm run test" command
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
