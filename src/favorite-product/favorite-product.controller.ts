@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { FavoriteProductService } from './favorite-product.service';
 import { FavoriteProduct } from './entities/favorite-product.entity';
 import { CreateFavoriteProductDto } from './dto/create-favorite-product.dto';
@@ -10,26 +19,58 @@ export class FavoriteProductController {
   ) {}
 
   @Post()
-  create(
+  async create(
     @Body() createFavoriteProductDto: CreateFavoriteProductDto,
   ): Promise<FavoriteProduct> {
-    return this.favoriteProductService.create(createFavoriteProductDto);
+    try {
+      return await this.favoriteProductService.create(createFavoriteProductDto);
+    } catch (error) {
+      throw new HttpException(
+        'Error creating favorite product',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
-  findAll(): Promise<FavoriteProduct[]> {
-    return this.favoriteProductService.findAll();
+  async findAll(): Promise<FavoriteProduct[]> {
+    try {
+      return await this.favoriteProductService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        'Error fetching favorite products',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':productId')
-  findOneByProductId(
+  async findOneByProductId(
     @Param('productId') productId: string,
   ): Promise<FavoriteProduct | null> {
-    return this.favoriteProductService.findOneByProductId(productId);
+    try {
+      const product =
+        await this.favoriteProductService.findOneByProductId(productId);
+      return product;
+    } catch (error) {
+      throw new HttpException(
+        'Error fetching favorite product',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':productId')
-  removeByProductId(@Param('productId') productId: string): Promise<void> {
-    return this.favoriteProductService.removeByProductId(productId);
+  async removeByProductId(
+    @Param('productId') productId: string,
+  ): Promise<void> {
+    try {
+      await this.favoriteProductService.removeByProductId(productId);
+    } catch (error) {
+      throw new HttpException(
+        'Error removing favorite product',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
